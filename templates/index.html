@@ -1,14 +1,77 @@
 <!DOCTYPE html>
 <html lang="en">
-    <head>
-        <meta charset="UTF-8">
-        <title>Test</title>
-    </head>
-   <body>
-        <form action = "/youtube" method = "POST">
-            <input type = "url" name = "url" />
-            <input type = "number" name = "second" />
-            <input type = "submit"/>
-        </form>
-   </body>
-</html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <title>KHUropBox</title>
+
+    <script src="/static/js/app.js"></script>
+
+    <link href="/static/css/app.css" rel="stylesheet">
+    <link href="/static/css/common.css" rel="stylesheet">
+    <link href="/static/css/override.css" rel="stylesheet">
+    <link href="/static/css/layout.css" rel="stylesheet">
+
+
+</head>
+<body>
+    <div id="wrapper">
+        <div id="page-content-wrapper">
+
+             <div id="header">
+                <div id="logo">
+                    <a href="/"></a>
+                </div>
+             </div>
+
+             <div id="content">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="panel panel-default">
+                        <div class="panel-heading"></div>
+                        <div class="panel-body">
+
+
+                            <form class="form-horizontal" role="form" method="POST" action="/youtube">
+
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label for="url">유튜브 주소</label>
+                                        <input id="url" type="url" class="form-control" name="url" required autofocus>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <label for="second">시간간격</label>
+                                        <input id="second" type="number" class="form-control" name="second" required>
+                                    </div>
+                                </div>
+
+                                <div class="form-group">
+                                    <div class="col-md-12">
+                                        <button type="submit" class="btn btn-success">
+                                            동영상 추출
+                                        </button>
+                                        <button class="btn btn-info" onclick="location.href='/cropping';">
+                                            이미지 변환
+                                        </button>
+                                        <button class="btn btn-primary" onclick="location.href='/detect';">
+                                            로그 변환
+                                        </button>
+                                        <button class="btn btn-danger" onclick="location.href='/view';">
+                                            로그 보기
+                                        </button>
+                                    </div>
+                                </div>
+
+                            </form>
+
+                        </div>
+                    </div>
+                </div>
+             </div>
+      </div>
+  </div>
+
+</body>
