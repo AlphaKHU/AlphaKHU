@@ -18,9 +18,9 @@ def youtube():
         second = int(request.form['second'])
         print(url, second)
         yt = YouTube(url)
-        yt.streams.first().download(os.getcwd())
+        yt.streams.first().download(os.getcwd(), filename='temp')
 
-        cap = cv2.VideoCapture(yt.title + ".mp4")
+        cap = cv2.VideoCapture("temp.mp4")
 
         try:
             if not os.path.exists('frame'):
@@ -28,7 +28,7 @@ def youtube():
         except OSError:
             print ('Error: Creating directory of frame')
 
-        vidcap = cv2.VideoCapture(yt.title + '.mp4')
+        vidcap = cv2.VideoCapture('temp.mp4')
         currentFrame = 0
         currentSavedFrame = 0
         while(True):
@@ -47,7 +47,7 @@ def youtube():
         cap.release()
         vidcap.release()
 
-        path =  yt.title + '.mp4'
+        path =  'temp.mp4'
         os.remove(path)
         
         return render_template('index.html')
