@@ -4,6 +4,7 @@ import sys
 from pytube import YouTube
 import cv2
 import os
+import goClassifier
 
 app = Flask(__name__)
 
@@ -54,9 +55,29 @@ def youtube():
 
 @app.route('/cropping', methods=['GET'])
 def cropping():
-    """
-        youtube() 함수에서 폴더에 저장된 이미지들을 Cropping하여 새로운 폴더에 옮기는 코드 작성
-    """
+    if request.method == 'GET':
+        # Save path to read and write image.
+        outputImagePath = os.path.abspath("./processedframe/")
+
+        # Save path directory.
+        inputFileDir = os.path.abspath("./frame/")
+        inputFileDirList = os.listdir(inputFileDir)
+        inputFileDirList.sort()
+
+        for imageName in inputFileDirList:
+            # Read image.
+            if str(imageName) == ".keep":
+                continue
+
+            originalImage = cv2.imread(str(inputFileDir) + "/" + str(imageName))
+            originalHeight, originalWidth, originalChanels = originalImage.shape
+            originalHeight += 0.1
+            originalWidth += 0.1
+
+            goClassifier.processingImage(originalImage, goClassifier.preprocessingImage(originalImage), originalHeight, originalWidth, outputImagePath)
+
+        return render_template('index.html')
+
     pass
 
 @app.route('/detect', methods=['GET'])
