@@ -57,28 +57,24 @@ def youtube():
 def cropping():
     if request.method == 'GET':
         # Save path to read and write image.
-        outputImagePath = os.path.abspath("./processedframe/")
 
         # Save path directory.
         inputFileDir = os.path.abspath("./frame/")
         inputFileDirList = os.listdir(inputFileDir)
         inputFileDirList.sort()
-
         for imageName in inputFileDirList:
             # Read image.
             if str(imageName) == ".keep":
                 continue
 
-            originalImage = cv2.imread(str(inputFileDir) + "/" + str(imageName))
+            originalImage = cv2.imread(os.path.join("./frame/", imageName))
             originalHeight, originalWidth, originalChanels = originalImage.shape
             originalHeight += 0.1
             originalWidth += 0.1
 
-            goClassifier.processingImage(originalImage, goClassifier.preprocessingImage(originalImage), originalHeight, originalWidth, outputImagePath)
+            goClassifier.processingImage(originalImage, goClassifier.preprocessingImage(originalImage), originalHeight, originalWidth, "./processedframe")
 
         return render_template('index.html')
-
-    pass
 
 @app.route('/detect', methods=['GET'])
 def detect():
