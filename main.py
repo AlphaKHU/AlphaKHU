@@ -24,8 +24,8 @@ def youtube():
         cap = cv2.VideoCapture("temp.mp4")
 
         try:
-            if not os.path.exists('frame'):
-                os.makedirs('frame')
+            if not os.path.exists('./static/frame'):
+                os.makedirs('./static/frame')
         except OSError:
             print ('Error: Creating directory of frame')
 
@@ -39,7 +39,7 @@ def youtube():
             ret, frame = cap.read()
 
             if(currentFrame % (second*30) == 0):
-                    name = './frame/frame' + str(currentSavedFrame) + '.jpg'
+                    name = './static/frame/frame' + str(currentSavedFrame) + '.jpg'
                     currentSavedFrame += 1
                     print ('Creating...' + name)
                     cv2.imwrite(name, frame)
@@ -48,18 +48,27 @@ def youtube():
         cap.release()
         vidcap.release()
 
-        path =  'temp.mp4'
+        path = 'temp.mp4'
         os.remove(path)
-        
-        return render_template('index.html')
+
+        image_names = os.listdir('./static/frame')
+        image_names = ['./static/frame/' + image for image in image_names]
+        print(image_names)
+
+        return render_template('index.html', image_names=image_names)
 
 @app.route('/cropping', methods=['GET'])
 def cropping():
     if request.method == 'GET':
         # Save path to read and write image.
+        try:
+            if not os.path.exists('./static/processedframe'):
+                os.makedirs('./static/processedframe')
+        except OSError:
+            print ('Error: Creating directory of frame')
 
         # Save path directory.
-        inputFileDir = os.path.abspath("./frame/")
+        inputFileDir = os.path.abspath("./static/frame/")
         inputFileDirList = os.listdir(inputFileDir)
         inputFileDirList.sort()
         for imageName in inputFileDirList:
@@ -67,14 +76,18 @@ def cropping():
             if str(imageName) == ".keep":
                 continue
 
-            originalImage = cv2.imread(os.path.join("./frame/", imageName))
+            originalImage = cv2.imread(os.path.join("./static/frame/", imageName))
             originalHeight, originalWidth, originalChanels = originalImage.shape
             originalHeight += 0.1
             originalWidth += 0.1
 
-            goClassifier.processingImage(originalImage, goClassifier.preprocessingImage(originalImage), originalHeight, originalWidth, "./processedframe")
+            goClassifier.processingImage(originalImage, goClassifier.preprocessingImage(originalImage), originalHeight, originalWidth, "./static/processedframe")
 
-        return render_template('index.html')
+        image_names = os.listdir('./static/processedframe')
+        image_names = ['./static/processedframe/' + image for image in image_names]
+        print(image_names)
+
+        return render_template('index.html', image_names=image_names)
 
 @app.route('/detect', methods=['GET'])
 def detect():
