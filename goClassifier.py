@@ -95,14 +95,14 @@ def processingImage(orginalImg, preprocessedImg, originalHeight, originalWidth, 
         heightRatio = (h / originalHeight) * 100
         widthRatio = (w / originalWidth) * 100
 
-        print "[WR]", widthRatio,"[HR]", heightRatio
+        #print "[WR]", widthRatio,"[HR]", heightRatio
         
         
         if heightRatio < 80 or widthRatio < 40:
             continue
 
         now = datetime.datetime.now().strftime("%d_%H-%M-%S")
-        cv2.imwrite(str(outputImagePath) + "/" + "processedframe" + str(outCount) + ".png", orginalImg[y: y + h, x: x + w])
+        cv2.imwrite(str(outputImagePath) + "/" + str(outCount) + ".png", orginalImg[y: y + h, x: x + w])
         outCount += 1
         cv2.rectangle(orginalImg, (x, y), (x + w, y + h), (0, 255, 0), 2)
         

@@ -7,6 +7,8 @@ import os
 import argparse
 import pickle
 import random
+import matplotlib
+matplotlib.use('Agg')
 
 try:
     from PIL import Image, ImageDraw
@@ -21,8 +23,8 @@ import output
 
 def argument_parser():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument('files', metavar='file', nargs='+',
-                        help="image to analyse")
+    # parser.add_argument('files', metavar='file', nargs='+',
+    #                     help="image to analyse")
     parser.add_argument('-w', type=int, default=640,
                     help="scale image to the specified width before analysis")
     parser.add_argument('-m', '--manual', dest='manual_mode',
@@ -44,9 +46,8 @@ def argument_parser():
  
 
 # TODO factor this into smaller functions
-def main():
+def main(folder, outputfile):
     """Main function of the program."""
-    
     parser = argument_parser()
     args = parser.parse_args()
 
@@ -54,6 +55,9 @@ def main():
     verbose = args.verbose
 
     random.seed(args.rng_seed)
+
+    args.files = folder
+    print args.files
 
     try:
         image = Image.open(args.files[0])
@@ -145,7 +149,8 @@ def main():
     
     else:
         game = output.Game(19, board) #TODO size parameter
-        for f in args.files[1:]:
+        #for f in args.files[1:]:
+        for i, f in enumerate(args.files):
             try:
                 image = Image.open(f)
             except IOError, msg:
@@ -162,7 +167,8 @@ def main():
             if args.sgf_output:
                 game.addMove(board)
             else:
-                print board
+                with open(outputfile + str(i) + ".log", "w") as f:
+                    f.write(str(board))
 
         if args.sgf_output:
             print game.asSGF()

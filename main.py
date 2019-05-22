@@ -4,7 +4,15 @@ import sys
 from pytube import YouTube
 import cv2
 import os
+from src import imago
 import goClassifier
+import re
+
+def atoi(text):
+    return int(text) if text.isdigit() else text
+
+def natural_keys(text):
+    return [ atoi(c) for c in re.split(r'(\d+)', text) ]
 
 app = Flask(__name__)
 
@@ -39,7 +47,7 @@ def youtube():
             ret, frame = cap.read()
 
             if(currentFrame % (second*30) == 0):
-                    name = './static/frame/frame' + str(currentSavedFrame) + '.jpg'
+                    name = './static/frame/' + str(currentSavedFrame) + '.jpg'
                     currentSavedFrame += 1
                     print 'Creating...' + name
                     cv2.imwrite(name, frame)
@@ -52,6 +60,7 @@ def youtube():
         os.remove(path)
 
         image_names = os.listdir('./static/frame')
+        image_names.sort(key=natural_keys)
         image_names = ['./static/frame/' + image for image in image_names]
 
         return render_template('index.html', image_names=image_names)
@@ -69,7 +78,9 @@ def cropping():
         # Save path directory.
         inputFileDir = os.path.abspath("./static/frame/")
         inputFileDirList = os.listdir(inputFileDir)
-        inputFileDirList.sort()
+        inputFileDirList.sort(key=natural_keys)
+        print inputFileDirList
+
         for imageName in inputFileDirList:
             # Read image.
             if str(imageName) == ".keep":
@@ -83,18 +94,33 @@ def cropping():
             goClassifier.processingImage(originalImage, goClassifier.preprocessingImage(originalImage), originalHeight, originalWidth, "./static/processedframe")
 
         image_names = os.listdir('./static/processedframe')
+        image_names.sort(key=natural_keys)
         image_names = ['./static/processedframe/' + image for image in image_names]
-        print image_names
 
         return render_template('index.html', image_names=image_names)
 
 @app.route('/detect', methods=['GET'])
 def detect():
-    pass
+    try:
+        if not os.path.exists('./static/logger'):
+            os.makedirs('./static/logger')
+    except OSError:
+        print 'Error: Creating directory of frame'
+
+    inputFileDir = os.path.abspath("./static/processedframe/")
+    inputFileDirList = os.listdir(inputFileDir)
+    inputFileDirList.sort(key=natural_keys)
+    print inputFileDirList
+
+    inputFileDirList = ['./static/processedframe/' + image for image in inputFileDirList]
+    imago.main(inputFileDirList, './static/logger/')
+
+    return render_template('index.html')
 
 @app.route('/view', methods=['GET'])
 def view():
     pass
 
 if __name__ == '__main__':
-    app.run(host='0.0.0.0', debug=True)
+    app.run(host='0.0.0.0')
+
