@@ -1,0 +1,5 @@
+pillow>=3.0.0
+numpy
+flask>=1.0.2
+pytube>=9.5.0
+imutils==0.5.2
