@@ -17,7 +17,7 @@ def youtube():
    if request.method == 'POST':
         url = request.form['url']
         second = int(request.form['second'])
-        print(url, second)
+        print url, second
         yt = YouTube(url)
         yt.streams.first().download(os.getcwd(), filename='temp')
 
@@ -84,7 +84,7 @@ def cropping():
 
         image_names = os.listdir('./static/processedframe')
         image_names = ['./static/processedframe/' + image for image in image_names]
-        print(image_names)
+        print image_names
 
         return render_template('index.html', image_names=image_names)
 
