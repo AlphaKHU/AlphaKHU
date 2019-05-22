@@ -95,7 +95,7 @@ def processingImage(orginalImg, preprocessedImg, originalHeight, originalWidth, 
         heightRatio = (h / originalHeight) * 100
         widthRatio = (w / originalWidth) * 100
 
-        print("[WR]", widthRatio,"[HR]", heightRatio)
+        print "[WR]", widthRatio,"[HR]", heightRatio
         
         
         if heightRatio < 80 or widthRatio < 40:

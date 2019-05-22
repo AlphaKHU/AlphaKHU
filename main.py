@@ -27,7 +27,7 @@ def youtube():
             if not os.path.exists('./static/frame'):
                 os.makedirs('./static/frame')
         except OSError:
-            print ('Error: Creating directory of frame')
+            print 'Error: Creating directory of frame'
 
         vidcap = cv2.VideoCapture('temp.mp4')
         currentFrame = 0
@@ -41,7 +41,7 @@ def youtube():
             if(currentFrame % (second*30) == 0):
                     name = './static/frame/frame' + str(currentSavedFrame) + '.jpg'
                     currentSavedFrame += 1
-                    print ('Creating...' + name)
+                    print 'Creating...' + name
                     cv2.imwrite(name, frame)
 
             currentFrame += 1
@@ -53,7 +53,6 @@ def youtube():
 
         image_names = os.listdir('./static/frame')
         image_names = ['./static/frame/' + image for image in image_names]
-        print(image_names)
 
         return render_template('index.html', image_names=image_names)
 
@@ -65,7 +64,7 @@ def cropping():
             if not os.path.exists('./static/processedframe'):
                 os.makedirs('./static/processedframe')
         except OSError:
-            print ('Error: Creating directory of frame')
+            print 'Error: Creating directory of frame'
 
         # Save path directory.
         inputFileDir = os.path.abspath("./static/frame/")
