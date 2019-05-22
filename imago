@@ -1,0 +1,8 @@
+#!/usr/bin/env python
+
+"""Go image recognition."""
+
+from src import imago
+
+if __name__ == "__main__":
+	imago.main()
