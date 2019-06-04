@@ -167,7 +167,7 @@ def main(folder, outputfile):
             if args.sgf_output:
                 game.addMove(board)
             else:
-                with open(outputfile + str(i) + ".log", "w") as f:
+                with open(outputfile + str(i) + ".txt", "w") as f:
                     f.write(str(board))
 
         if args.sgf_output:

@@ -20,6 +20,12 @@ app = Flask(__name__)
 def index():
    return render_template('index.html')
 
+@app.route('/logger')
+def dir_listing():
+    files = os.listdir('static/logger')
+    files = ['static/logger/' + file for file in files]
+    return render_template('files.html', files=files)
+
 @app.route('/youtube', methods=['POST'])
 def youtube():
    if request.method == 'POST':
