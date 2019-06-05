@@ -125,7 +125,41 @@ def detect():
 
 @app.route('/view', methods=['GET'])
 def view():
-    pass
+    try:
+        if not os.path.exists('./static/result'):
+            os.makedirs('./static/result')
+    except OSError:
+        print 'Error: Creating directory of result'
+
+    logDir = os.path.abspath("./static/processedframe/")
+    logList = os.listdir(logDir)
+    logList.sort(key=natural_keys)
+    print logList
+
+    resultFile = open(logDir + "/result.txt", 'w') #결과 저장할 텍스트파일
+
+    for lognum in range(0, len(logList) -1):
+    #로그리스트 크기 -1만큼 반복
+        log_prev = logList[lognum] #이전 수 상황 0~ n-1
+        log_curr = logList[lognum + 1] #현재 수 상황 1~n
+
+        for rownum in range(0,19): #파일 끝까지 읽음
+            line_prev = log_prev.readline() #이전 수 파일 한줄 읽음
+            if not line_prev: break #없으면 나옴
+            line_curr = log_prev.readline() #현재 수 파일 한줄 읽음
+            if not line_curr: break #없으면 나옴
+
+            for colnum in range(0,len(line_curr)): #두 파일의 한줄당 글자수는 같을것이므로
+                if(line_prev[colnum] != line_curr[colnum]): 
+                    #읽다가 다른 수가 발견되면 여기 둔것임
+                    resultFile.write(line_curr[colnum] + " (" + str(rownum) + "," + str(colnum) + ")\n")
+                    break 
+                    #B (x,y) 또는 W (x,y)형식으로 한줄씩 기록후 break
+
+            
+    f.close() #기록이 끝나면 닫음
+
+    #pass
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0')
