@@ -126,12 +126,12 @@ def detect():
 @app.route('/view', methods=['GET'])
 def view():
     try:
-        if not os.path.exists('./static/result'):
-            os.makedirs('./static/result')
+        if not os.path.exists('./static/logger'):
+            os.makedirs('./static/logger')
     except OSError:
         print 'Error: Creating directory of result'
 
-    logDir = os.path.abspath("./static/processedframe/")
+    logDir = os.path.abspath("./static/logger/")
     logList = os.listdir(logDir)
     logList.sort(key=natural_keys)
     print logList
@@ -140,8 +140,8 @@ def view():
 
     for lognum in range(0, len(logList) -1):
     #로그리스트 크기 -1만큼 반복
-        log_prev = logList[lognum] #이전 수 상황 0~ n-1
-        log_curr = logList[lognum + 1] #현재 수 상황 1~n
+        log_prev = open(logDir + logList[lognum] + ".txt",'r') #이전 수 상황 0~ n-1
+        log_curr = open(logDir + logList[lognum +1] + ".txt",'r') #현재 수 상황 1~n
 
         for rownum in range(0,19): #파일 끝까지 읽음
             line_prev = log_prev.readline() #이전 수 파일 한줄 읽음
