@@ -4,4 +4,4 @@ flask>=1.0.2
 pytube>=9.5.0
 imutils==0.5.2
 virtualenv==16.6.0
-opencv-python==4.1.0.25
+opencv-python==4.2.0.32
